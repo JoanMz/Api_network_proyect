@@ -8,6 +8,6 @@
 
 - Nicolas Peña Irurita
 - Kevin andres muñoz
-- member
+- Simón García
 - member
 - Joan Mateo Bermudez Collazos
