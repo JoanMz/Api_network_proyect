@@ -5,11 +5,12 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'new_schema'
+  database: 'new_schema',
+  port: 3306
 });
 
 // Función para obtener todos los pacientes de la base de datos
-async function getAllPacientes() {
+async function getAllCitas() {
   try {
     const [rows] = await pool.query('SELECT * FROM citas');
     return rows;
@@ -20,24 +21,23 @@ async function getAllPacientes() {
 }
 
 // Función para obtener un paciente por su ID
-async function getPacienteById(id) {
+async function getCitaById(id) {
     const result = await pool.query('SELECT * FROM citas WHERE id = ?', [id]);
     return result[0];
 }
 
-// Función para crear un nuevo paciente en la base de datos
-async function createPaciente(Name,Medical_Condition,medical_appointment_day,Insurance_Provider,Horario,number) {
+async function createCita(Name, Medical_Condition, medical_appointment_day, Insurance_Provider, Horario, number) {
   try {
-    await pool.query('INSERT INTO citas (Name,Medical_Condition,medical_appointment_day,Insurance_Provider,Horario,number) VALUES (?, ?, ?, ?, ?, ?)', [Name,Medical_Condition,medical_appointment_day,Insurance_Provider,Horario,number
-    ]);
+    await pool.query('INSERT INTO citas (Name, `Medical Condition`, `medical appointment day`, `Insurance Provider`, Horario, number) VALUES (?, ?, ?, ?, ?, ?)', 
+    [Name, Medical_Condition, medical_appointment_day, Insurance_Provider, Horario, number]);
   } catch (error) {
-    console.error('Error al crear el paciente:', error);
+    console.error('Error al crear la cita:', error);
     throw error;
   }
 }
 
 // Función para actualizar un paciente en la base de datos por su ID
-async function updatePacienteById(id, nuevaInformacion) {
+async function updateCitaById(id, nuevaInformacion) {
   try {
     await pool.query('UPDATE citas SET ? WHERE id = ?', [nuevaInformacion, id]);
   } catch (error) {
@@ -47,7 +47,7 @@ async function updatePacienteById(id, nuevaInformacion) {
 }
 
 // Función para borrar un paciente en la base de datos por su ID
-async function deletePacienteById(id) {
+async function deleteCitaById(id) {
   try {
     await pool.query('DELETE FROM citas WHERE id = ?', [id]);
   } catch (error) {
@@ -56,4 +56,4 @@ async function deletePacienteById(id) {
   }
 }
 
-module.exports = { getAllPacientes, getPacienteById, createPaciente, updatePacienteById, deletePacienteById };
+module.exports = { getAllCitas, getCitaById, createCita, updateCitaById, deleteCitaById };
