@@ -11,7 +11,7 @@ router.get('/citas', async (req, res) => {
 // Obtener una cita por su ID
 router.get('/citas/:id', async (req, res) => {
     const id = req.params.id;
-    const cita = await citasModel.getCitaById(id);
+    const cita = await citasModel.getCitasById(id);
     res.json(cita);
 });
 
@@ -19,14 +19,14 @@ router.get('/citas/:id', async (req, res) => {
 router.put('/citas/:id', async (req, res) => {
     const id = req.params.id;
     const nuevaInfoCita = req.body;
-    await citasModel.updateCitaById(id, nuevaInfoCita);
+    await citasModel.updateCitasById(id, nuevaInfoCita);
     res.send('Cita actualizada correctamente');
 });
 
 // Crear una nueva cita
 router.post('/citas', async (req, res) => {
     const nuevaCita = req.body;
-    await citasModel.createCita(nuevaCita);
+    await citasModel.createCitas(nuevaCita);
     res.send('Cita creada correctamente');
 });
 

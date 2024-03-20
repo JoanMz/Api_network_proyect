@@ -7,7 +7,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use('/api', citasController); // Verifica que citasController esté definido y exportado correctamente
+app.use('/', citasController); // Verifica que citasController esté definido y exportado correctamente
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
