@@ -29,7 +29,7 @@ async function getCitasById(id) {
 // Función para crear un nuevo Citas en la base de datos
 async function createCitas(Name, Medical_Condition, medical_appointment_day, Insurance_Provider, Horario, number) {
   try {
-    await pool.query('INSERT INTO citas ("Name","Medical Condition","medical appointment day","Insurance Provider", "Horario", "number") VALUES (?, ?, ?, ?, ?, ?)', 
+    await pool.query('INSERT INTO citas  (Name, `Medical Condition`, `medical appointment day`, `Insurance Provider`, Horario, number) VALUES (?, ?, ?, ?, ?, ?)', 
     [Name,Medical_Condition,medical_appointment_day,Insurance_Provider,Horario,number]);
   } catch (error) {
     console.error('Error al crear el Citas:', error);
