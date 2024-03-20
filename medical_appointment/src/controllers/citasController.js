@@ -26,8 +26,13 @@ router.put('/citas/:id', async (req, res) => {
 // Crear una nueva cita
 router.post('/citas', async (req, res) => {
     const nuevaCita = req.body;
-    await citasModel.createCitas(nuevaCita);
-    res.send('Cita creada correctamente');
+    try {
+        await citasModel.createCitas(nuevaCita);
+        res.send('Cita creada correctamente');
+    } catch (error) {
+        console.error('Error al crear la cita:', error);
+        res.status(500).send('Error al crear la cita');
+    }
 });
 
 // Borrar una cita por su ID
