@@ -11,8 +11,15 @@ router.get('/users', async (req, res) => {
 
 router.get('/users/:id', async (req, res) => {
     const userId = req.params.id;
-    const user = await userModel.getUserById(userId);
-    res.json(user);
+    try {
+        const user = await userModel.getUserById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener el usuario', error: error.message });
+    }
 });
 
 router.put('/users/:id', async (req, res) => {

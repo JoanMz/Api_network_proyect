@@ -27,9 +27,10 @@ async function getAllUsers() {
 }
 
 // Función para obtener un usuario por su ID (solo para administradores)
-async function getUserById(Id) {
+
+async function getUserById(id) {
     try {
-        const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [Id]);
+        const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id]); // Corregido aquí
         return rows[0];
     } catch (error) {
         console.error('Error al obtener usuario por ID:', error);
@@ -41,7 +42,7 @@ async function getUserById(Id) {
 async function updateUser(Id, newData) {
     const { username, password, Name, type } = newData;
     try {
-        await connection.query('UPDATE users SET user = ?, password = ?, Name = ?,  type = ? WHERE id = ?', [username, password, Name, type, Id]);
+        await pool.query('UPDATE users SET user = ?, password = ?, Name = ?,  type = ? WHERE id = ?', [username, password, Name, type, Id]);
     } catch (error) {
         console.error('Error al actualizar usuario:', error);
         throw error;
@@ -84,6 +85,7 @@ async function getUserByEmail(correo) {
 //
 
 // Función para obtener todos los doctores
+
 async function getAllDoctors() {
     let connection;
     try {
@@ -91,7 +93,7 @@ async function getAllDoctors() {
         const [rows] = await connection.query('SELECT * FROM doctors');
         return rows;
     } catch (error) {
-        console.error('Error al obtener los doctores', error);
+        console.error('Error al obtener los doctors', error);
         throw error;
     } finally {
         if (connection) connection.release();
