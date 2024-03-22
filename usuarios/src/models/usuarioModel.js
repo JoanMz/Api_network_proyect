@@ -4,7 +4,8 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'new_schema'
+  database: 'new_schema',
+  port: 3306
 });
 
 async function getAllUsuarios() {
@@ -18,13 +19,13 @@ async function getUsuarioById(id) {
 }
 
 async function createUsuario(usuario) {
-  const { nombre, correo, contraseña } = usuario;
-  await pool.query('INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)', [nombre, correo, contraseña]);
+  const { username, email, password } = usuario;
+  await pool.query('INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)', [username, email, password]);
 }
 
 async function updateUsuarioById(id, usuario) {
-  const { nombre, correo, contraseña } = usuario;
-  await pool.query('UPDATE usuarios SET nombre = ?, correo = ?, contraseña = ? WHERE id = ?', [nombre, correo, contraseña, id]);
+  const { username, email, password } = usuario;
+  await pool.query('UPDATE usuarios SET username = ?, email = ?, password = ? WHERE id = ?', [username, email, password, id]);
 }
 
 async function deleteUsuarioById(id) {
