@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const adminController = require('./controllers/adminController');
-const pacienteController = require('./controllers/pacienteController');
-const medicoController = require('./controllers/medicoController');
+const usuariosController = require('./controllers/usuarioController');
+
 
 const app = express();
 const PORT = 3000;
@@ -11,14 +10,6 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Rutas para el controlador de administrador
-app.use('/admin', adminController);
-
-// Rutas para el controlador de paciente
-app.use('/paciente', pacienteController);
-
-// Rutas para el controlador de médico
-app.use('/medico', medicoController);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
