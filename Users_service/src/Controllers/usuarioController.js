@@ -1,133 +1,73 @@
-const { Router } = require('express');
-const router = Router();
+const express = require('express');
+const router = express.Router();
 const userModel = require('../models/userModel');
 
 router.get('/users', async (req, res) => {
-    userModel.getAllUsers((error, users) => {
-        if (error) {
-            console.error('Error al obtener usuarios:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json(users);
-    });
+    const users = await userModel.getAllUsers();
+    res.json(users);
 });
 
 router.get('/users/:id', async (req, res) => {
     const userId = req.params.id;
-
-    userModel.getUserById(userId, (error, user) => {
-        if (error) {
-            console.error('Error al obtener usuario por ID:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-        res.status(200).json(user);
-    });
+    const user = await userModel.getUserById(userId);
+    res.json(user);
 });
 
 router.put('/users/:id', async (req, res) => {
     const userId = req.params.id;
     const newData = req.body;
-
-    userModel.updateUser(userId, newData, (error) => {
-        if (error) {
-            console.error('Error al actualizar usuario:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json({ message: 'Usuario actualizado correctamente' });
-    });
+    await userModel.updateUser(userId, newData);
+    res.json({ message: 'Usuario actualizado correctamente' });
 });
 
 router.delete('/users/:id', async (req, res) => {
     const userId = req.params.id;
-
-    userModel.deleteUser(userId, (error) => {
-        if (error) {
-            console.error('Error al eliminar usuario por ID:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json({ message: 'Usuario eliminado correctamente' });
-    });
+    await userModel.deleteUser(userId);
+    res.json({ message: 'Usuario eliminado correctamente' });
 });
 
 router.post('/users', async (req, res) => {
     const { username, password, type } = req.body;
-
-    userModel.createUser(username, password, type, (error) => {
-        if (error) {
-            console.error('Error al crear usuario:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json({ message: 'Usuario creado correctamente' });
-    });
+    await userModel.createUser(username, password, type);
+    res.json({ message: 'Usuario creado correctamente' });
 });
+
 
 // Ahora las funciones de la tabla doctors
 //
 //
 
 router.get('/doctors', async (req, res) => {
-    userModel.getAllDoctors((error, users) => {
-        if (error) {
-            console.error('Error al obtener usuarios:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json(users);
-    });
+    const doctors = await userModel.getAllDoctors();
+    res.json(doctors);
 });
 
 router.get('/doctors/:id', async (req, res) => {
-    const userId = req.params.id;
-
-    userModel.getDoctorById(userId, (error, user) => {
-        if (error) {
-            console.error('Error al obtener usuario por ID:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-        res.status(200).json(user);
-    });
+    const doctorId = req.params.id;
+    const doctor = await userModel.getDoctorById(doctorId);
+    if (!doctor) {
+        return res.status(404).json({ message: 'Doctor no encontrado' });
+    }
+    res.json(doctor);
 });
 
 router.put('/doctors/:id', async (req, res) => {
-    const userId = req.params.id;
+    const doctorId = req.params.id;
     const newData = req.body;
-
-    userModel.updateDoctor(userId, newData, (error) => {
-        if (error) {
-            console.error('Error al actualizar usuario:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json({ message: 'Usuario actualizado correctamente' });
-    });
+    await userModel.updateDoctor(doctorId, newData);
+    res.json({ message: 'Doctor actualizado correctamente' });
 });
 
 router.delete('/doctors/:id', async (req, res) => {
-    const userId = req.params.id;
-
-    userModel.deleteDoctor(userId, (error) => {
-        if (error) {
-            console.error('Error al eliminar usuario por ID:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json({ message: 'Usuario eliminado correctamente' });
-    });
+    const doctorId = req.params.id;
+    await userModel.deleteDoctor(doctorId);
+    res.json({ message: 'Doctor eliminado correctamente' });
 });
 
 router.post('/doctors', async (req, res) => {
     const { username, password, type } = req.body;
-
-    userModel.createDoctor(username, password, type, (error) => {
-        if (error) {
-            console.error('Error al crear usuario:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-        res.status(200).json({ message: 'Usuario creado correctamente' });
-    });
+    await userModel.createDoctor(username, password, type);
+    res.json({ message: 'Doctor creado correctamente' });
 });
 
 module.exports = router;

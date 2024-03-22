@@ -7,7 +7,6 @@ router.get('/citas', async (req, res) => {
     const citas = await citasModel.getAllCitas();
     res.json(citas);
 });
-
 // Obtener una cita por su ID
 router.get('/citas/:id', async (req, res) => {
     const id = req.params.id;
