@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 base = declarative_base()
-engine = create_engine(f"mysql+mysqlconnector://{config("DB_USER")}:{config("DB_PASSWORD")}@{config("DB_HOST")}:{config("DB_PORT")}/{config("DB")}")  # //user:password@host:port/database
+engine = create_engine(f'mysql+mysqlconnector://{config("DB_USER")}:{config("DB_PASSWORD")}@{config("DB_HOST")}:{config("DB_PORT")}/{config("DB")}')  # //user:password@host:port/database
 
 
 Session = sessionmaker()

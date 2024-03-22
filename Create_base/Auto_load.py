@@ -32,7 +32,7 @@ for duplicate in list_of_duplicates:
         if i > 0:
             print(index_duplicate[0], end="\n<---<model>--->\n")
             print(index_duplicate[i], end="\n//\n")
-            print(f"find duplicate user : {df_registro.loc[index_duplicate[i]], "user"}")
+            print(f"find duplicate user : {df_registro.loc[index_duplicate[i]], 'user'}")
             df_registro.loc[index_duplicate[i], "Blood Type"] = model
                  
 print("<-- fix inconsistency -->")
@@ -75,7 +75,7 @@ df_user.to_sql("users", con=Pysqlconnect.connection(), if_exists="replace", inde
                                                                                                 "Name":sqlalchemy.types.String(40)})
 
 
-df_doctor.to_sql("doctors", con=Pysqlconnect.connection(), if_exists="replace", dtype={"user":sqlalchemy.types.String(40),
+df_doctor.to_sql("doctors", con=Pysqlconnect.connection(), if_exists="replace", index=False, dtype={"user":sqlalchemy.types.String(40),
                                                                                                 "password":sqlalchemy.types.String(40),
                                                                                                 "Name":sqlalchemy.types.String(40)})
 
