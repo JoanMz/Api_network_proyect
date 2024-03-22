@@ -1,21 +1,28 @@
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 
 // Configuración de la conexión a la base de datos MySQL
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'password',
     database: 'clinica',
-    port: 3306
+    port: 3306,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 async function getAllUsers() {
+    let connection;
     try {
+        connection = await pool.getConnection();
         const [rows] = await connection.query('SELECT * FROM users');
-        return rows;2
+        return rows;
     } catch (error) {
-        console.error('Error al obtener usuarios:', error);
+        console.error('Error al obtener los usuarios', error);
         throw error;
+    } finally {
+        if (connection) connection.release();
     }
 }
 
@@ -78,15 +85,18 @@ async function getUserByEmail(correo) {
 
 // Función para obtener todos los doctores
 async function getAllDoctors() {
+    let connection;
     try {
-        const [rows] = await pool.query('SELECT * FROM doctors');
+        connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT * FROM doctors');
         return rows;
     } catch (error) {
-        console.error('Error al obtener doctores:', error);
+        console.error('Error al obtener los doctores', error);
         throw error;
+    } finally {
+        if (connection) connection.release();
     }
 }
-
 // Función para obtener un médico por su ID
 async function getDoctorById(id) {
     try {

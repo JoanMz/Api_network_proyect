@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const userModel = require('../models/userModel');
+const userModel = require('../Models/userModel');
+const bodyParser = require('body-parser');
 
 router.get('/users', async (req, res) => {
-    const users = await userModel.getAllUsers();
+    const users = await userModel.getAllUsers(); // No necesitas desestructurar aquí
     res.json(users);
 });
+
 
 router.get('/users/:id', async (req, res) => {
     const userId = req.params.id;
@@ -38,8 +40,8 @@ router.post('/users', async (req, res) => {
 //
 
 router.get('/doctors', async (req, res) => {
-    const doctors = await userModel.getAllDoctors();
-    res.json(doctors);
+    const users = await userModel.getAllDoctors(); // No necesitas desestructurar aquí
+    res.json(users);
 });
 
 router.get('/doctors/:id', async (req, res) => {
