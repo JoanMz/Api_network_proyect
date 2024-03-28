@@ -1,9 +1,7 @@
 const express = require('express');
-const model = require('./model'); // Importar el módulo del modelo
-
+const model = require('./model');
 const router = express.Router();
 
-// Ruta protegida para obtener pacientes atendidos por el médico autenticado
 // router.get('/medico/pacientes', autenticarMedico, async (req, res) => {
 //     const doctorId = req.doctorId;
   
@@ -27,26 +25,13 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-// Ruta para iniciar sesión como administrador
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  // Verificar si el nombre de usuario y la contraseña son válidos
-  if (username === 'admin' && password === 'admin123') {
-    // Si las credenciales son válidas, el inicio de sesión es exitoso
-    res.status(200).json({ message: 'Inicio de sesión exitoso' });
-  } else {
-    // Si las credenciales no son válidas, devuelve un mensaje de error
-    res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
-  }
-});
-
 // Ruta para obtener un registro de paciente por ID
-router.get('/registro/:id', async (req, res) => {
+router.get('/registro/:user', async (req, res) => {
   try {
-    const pacienteId = req.params.id;
+    const pacienteEmail = req.params.user;
 
     // Llamada a la función para obtener el registro del paciente
-    const registroPaciente = await model.obtenerRegistroPaciente(pacienteId);
+    const registroPaciente = await model.obtenerRegistroPaciente(pacienteEmail);
 
     // Envía el registro del paciente como respuesta
     res.json(registroPaciente);
@@ -55,6 +40,7 @@ router.get('/registro/:id', async (req, res) => {
     res.status(500).send('Ocurrió un error al obtener el registro del paciente');
   }
 });
+
 
 // Ruta para agregar un nuevo registro
 router.post('/registro', async (req, res) => {
@@ -98,20 +84,6 @@ router.delete('/registro/:id', async (req, res) => {
   } catch (error) {
     console.error('Error al borrar el registro:', error);
     res.status(500).send('Ocurrió un error al borrar el registro');
-  }
-});
-
-// Ruta para obtener estadísticas desde la base de datos
-router.get('/estadisticas', async (req, res) => {
-  try {
-    // Llamamos a la función para obtener estadísticas desde la base de datos
-    const estadisticas = await model.obtenerEstadisticas();
-
-    // Enviamos las estadísticas como respuesta
-    res.json(estadisticas);
-  } catch (error) {
-    console.error('Error al obtener estadísticas:', error);
-    res.status(500).send('Ocurrió un error al obtener estadísticas desde la base de datos');
   }
 });
 

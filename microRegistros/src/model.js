@@ -21,13 +21,13 @@ connection.connect((err) => {
 
 function obtenerRegistroPaciente(pacienteId) {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT `Name`, `Age`, `Gender`, `Blood Type`, `Insurance Provider`, `Medication`, `Doctor` FROM registro WHERE id = ?';
+    const query = 'SELECT `Name`, `Age`, `Gender`, `Blood Type`, `Insurance Provider`, `Medication`, `Doctor` FROM registro WHERE user = ?';
     connection.query(query, [pacienteId], (error, results) => {
       if (error) {
         reject(new Error(`An error occurred while getting the register ${pacienteId}: ${error.message}`));
       } else {
         if (results.length === 0) {
-          reject(new Error(`No record found for patient with ID ${pacienteId}`));
+          reject(new Error(`No record found for patient with user ${pacienteId}`));
         } else {
           resolve(results[0]); // Enviar el primer resultado de la consulta (debería ser único)
         }
@@ -36,18 +36,6 @@ function obtenerRegistroPaciente(pacienteId) {
   });
 }
 
-// async function obtenerRegistrosMedico(doctorId) {
-//     return new Promise((resolve, reject) => {
-//       const query = 'SELECT * FROM registro WHERE Doctor_user = ?';
-//       connection.query(query, [doctorId], (error, results) => {
-//         if (error) {
-//           reject(new Error(`An error occurred while getting medical records for doctor ${doctorId}: ${error.message}`));
-//         } else {
-//           resolve(results);
-//         }
-//       });
-//     });
-//   }
 function agregarRegistroPaciente(nuevoRegistro) {
   return new Promise((resolve, reject) => {
     const query = 'INSERT INTO registro (`Name`, `Age`, `Gender`, `Blood Type`, `Insurance Provider`, `Medication`, `Doctor`) VALUES (?, ?, ?, ?, ?, ?, ?)';
@@ -137,47 +125,11 @@ async function obtenerEstadisticas() {
     }
   }
   
-// function autenticarMedico(req, res, next) {
-//     // Verificar si el token de autenticación está presente en el encabezado de autorización
-//     const token = req.headers.authorization;
-    
-//     if (!token) {
-//       return res.status(401).json({ error: 'Token de autenticación no proporcionado' });
-//     }
-  
-//     try {
-//       // Verificar y decodificar el token
-//       const decoded = jwt.verify(token, 'secreto'); // Reemplaza 'secreto' con tu secreto de token
-      
-//       // Extraer el ID del médico del token decodificado
-//       const doctorId = decoded.doctorId;
-      
-//       // Verificar si el médico existe en la base de datos
-//       connection.query('SELECT * FROM doctors WHERE id = ?', [doctorId], (error, results) => {
-//         if (error) {
-//           console.error('Error al buscar médico en la base de datos:', error);
-//           return res.status(500).json({ error: 'Error al autenticar médico' });
-//         }
-  
-//         if (results.length === 0) {
-//           return res.status(401).json({ error: 'Médico no encontrado' });
-//         }
-  
-//         // Adjuntar el ID del médico a la solicitud para que esté disponible en las rutas protegidas
-//         req.doctorId = doctorId;
-//         next();
-//       });
-//     } catch (error) {
-//       console.error('Error al verificar el token de autenticación:', error);
-//       return res.status(401).json({ error: 'Token de autenticación inválido' });
-//     }
-// }
+
 module.exports = {
   obtenerRegistroPaciente,
   agregarRegistroPaciente,
   editarRegistroPaciente,
   cancelarRegistro,
   obtenerEstadisticas,
-  //autenticarMedico,
-  //obtenerRegistrosMedico
 };
